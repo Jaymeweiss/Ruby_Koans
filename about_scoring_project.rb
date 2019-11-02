@@ -29,8 +29,20 @@ require File.expand_path(File.dirname(__FILE__) + '/neo')
 #
 # Your goal is to write the score method.
 
+def get_number_of_dice(dice)
+  counts = Array.new
+  (1..6).each { |pos| counts[pos] = 0}
+  dice.each do |die|
+    counts[die] += 1
+  end
+  counts
+end
+
 def score(dice)
-  # You need to write this method
+  number_of_each_kind_of_die = get_number_of_dice(dice)
+  score = [2,3,4,5,6].inject(0) { |sum, die_number| sum + (number_of_each_kind_of_die[die_number] > 2 ? die_number * 100 : 0) }
+  score += number_of_each_kind_of_die[1] > 2 ? 1000 + (number_of_each_kind_of_die[1] - 3) * 100 : number_of_each_kind_of_die[1] * 100
+  score + (number_of_each_kind_of_die[5] > 2 ? (number_of_each_kind_of_die[5] - 3) * 50 : number_of_each_kind_of_die[5] * 50)
 end
 
 class AboutScoringProject < Neo::Koan
